@@ -26,5 +26,20 @@
             }
         }
 
+        public float getAverageRatingf()
+        {
+            if (RestaurantRatings.Count == 0) return 0;
+            else
+            {
+                float avg = 0;
+                foreach (RestaurantRating rating in RestaurantRatings)
+                {
+                    avg += rating.rating;
+                }
+                
+                return avg / RestaurantRatings.Count;
+            }
+        }
+
     }
 }
