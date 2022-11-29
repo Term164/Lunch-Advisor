@@ -20,10 +20,6 @@ namespace LunchAdvisor.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            //Restaurant restaurant = await _context.Restaurant.SingleOrDefaultAsync(r => r.ID == 1);
-            //await _context.Entry(restaurant).Collection(r => r.RestaurantRatings).LoadAsync();
-
             var lunchAdvisorContext = _context.Restaurant;
             return View(await lunchAdvisorContext.ToListAsync());
         }
