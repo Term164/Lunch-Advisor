@@ -12,16 +12,17 @@
         public virtual ICollection<Dish>? Dishes { get; set; }
         public virtual ICollection<Waiter>? Waiters { get; set; }
 
-        public float getAverageRating() {
-            if(RestaurantRatings.Count == 0) return 0;
+        public string getAverageRating() {
+            if(RestaurantRatings.Count == 0) return "0";
             else
             {
-                int avg = 0;
+                float avg = 0;
                 foreach(RestaurantRating rating in RestaurantRatings)
                 {
                     avg += rating.rating;
                 }
-                return avg/RestaurantRatings.Count;
+                avg /= RestaurantRatings.Count;
+                return avg.ToString("F1");
             }
         }
 
