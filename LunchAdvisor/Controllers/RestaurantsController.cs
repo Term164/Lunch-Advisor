@@ -43,6 +43,23 @@ namespace LunchAdvisor.Controllers
             return View(restaurant);
         }
 
+        public async Task<IActionResult> Staff(int? id)
+        {
+            if (id == null || _context.Restaurant == null)
+            {
+                return NotFound();
+            }
+
+            var restaurant = await _context.Restaurant
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            return View(restaurant);
+        }
+
         // GET: Restaurants/Create
         public IActionResult Create()
         {
