@@ -42,7 +42,17 @@ public class LunchAdvisorContext : IdentityDbContext<LunchAdvisorUser>
             .HasOne(rr => rr.Restaurant)
             .WithMany(r => r.RestaurantRatings)
             .HasForeignKey(rr => rr.RestaurantID);
-        
+
+        builder.Entity<WaiterRating>()
+            .HasOne(rr => rr.Waiter)
+            .WithMany(r => r.WaiterRatings)
+            .HasForeignKey(rr => rr.WaiterID);
+
+        builder.Entity<DishRating>()
+            .HasOne(rr => rr.Dish)
+            .WithMany(r => r.DishRatings)
+            .HasForeignKey(rr => rr.DishID);
+
         //builder.Entity<Restaurant>().HasMany(r => r.RestaurantRatings).WithOne(rr => rr.Restaurant).IsRequired();
 
     }

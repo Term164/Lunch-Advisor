@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LunchAdvisor.Data;
 using LunchAdvisor.Models;
+using System.Security.Claims;
 
 namespace LunchAdvisor.Controllers
 {
@@ -46,11 +47,49 @@ namespace LunchAdvisor.Controllers
             return View(waiterRating);
         }
 
-        public IActionResult Review(int? id)
+        public async Task<IActionResult> Review(int? id)
         {
             ViewBag.Id = id;
+
+            var Waiter = await _context.Waiter
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Waiter == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Name = Waiter.Name;
+
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Review(WaiterRating waiterRating)
+        {
+            waiterRating.date = DateTime.Now;
+            waiterRating.WaiterID = waiterRating.ID;
+            waiterRating.ID = 0;
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            waiterRating.UserID = claims.Value;
+
+
+            ModelState.Clear();
+            TryValidateModel(waiterRating);
+            if (ModelState.IsValid)
+            {
+                _context.Add(waiterRating);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Waiters", new {id = waiterRating.ID});
+            }
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", waiterRating.UserID);
+            ViewData["WaiterID"] = new SelectList(_context.Waiter, "ID", "ID", waiterRating.WaiterID);
+            return View(waiterRating);
+        }
+
 
         // GET: WaiterRatings/Create
         public IActionResult Create()

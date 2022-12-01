@@ -8,8 +8,9 @@ namespace LunchAdvisor.Models
         public int ID { get; set; }
         public int WaiterID { get; set; }
         public string UserID { get; set; }
-        public virtual Waiter Waiter { get; set; }
-        public virtual LunchAdvisorUser User { get; set; }
+        public virtual Waiter? Waiter { get; set; }
+        public virtual LunchAdvisorUser? User { get; set; }
+
         [Display(Name = "Title")]
         public string Name { get; set; }
         public string Description { get; set; }
