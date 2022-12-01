@@ -35,7 +35,7 @@
             <p class="fs-5">Address: @Model.Location</p>
             <div class="d-flex mt-3 mb-3 justify-content-evenly">
                 <a asp-action="Staff" asp-route-id="@Model.ID" class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-person-vcard fs-1"></i> Staff</a>
-                <a class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-egg-fried fs-1"></i> Dishes</a>
+                <a asp-action="Dishes" asp-route-id="@Model.ID" class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-egg-fried fs-1"></i> Dishes</a>
             </div>
         </div>
     </div>
