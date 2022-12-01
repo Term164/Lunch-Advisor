@@ -83,7 +83,7 @@ namespace LunchAdvisor.Controllers
             {
                 _context.Add(restaurantRating);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Restaurants");
+                return RedirectToAction("Details", "Restaurants", new {id = restaurantRating.RestaurantID});
             }
             ViewData["RestaurantID"] = new SelectList(_context.Restaurant, "ID", "ID", restaurantRating.RestaurantID);
             ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", restaurantRating.UserID);
