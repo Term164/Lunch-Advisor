@@ -1,4 +1,4 @@
-﻿@model LunchAdvisor.Models.WaiterRating
+﻿@model LunchAdvisor.Models.DishRating
 
 @{
     ViewData["Title"] = ViewBag.Name + " Review";
@@ -6,7 +6,7 @@
 }
 
 <h1>@ViewBag.Name Review</h1>
-@using (Html.BeginForm("Review", "WaiterRatings", FormMethod.Post))
+@using (Html.BeginForm("Review", "DishRatings", FormMethod.Post))
 {
     <div class="mb-3">
         @Html.LabelFor(m => m.Name, new {@class = "form-label"})

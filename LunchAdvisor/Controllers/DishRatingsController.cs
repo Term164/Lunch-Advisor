@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LunchAdvisor.Data;
 using LunchAdvisor.Models;
+using System.Security.Claims;
 
 namespace LunchAdvisor.Controllers
 {
@@ -43,6 +44,49 @@ namespace LunchAdvisor.Controllers
                 return NotFound();
             }
 
+            return View(dishRating);
+        }
+
+        public async Task<IActionResult> Review(int? id)
+        {
+            ViewBag.Id = id;
+
+            var Dish = await _context.Dish
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Dish == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Name = Dish.Name;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Review(DishRating dishRating)
+        {
+            dishRating.date = DateTime.Now;
+            dishRating.DishID = dishRating.ID;
+            dishRating.ID = 0;
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            dishRating.UserID = claims.Value;
+
+
+            ModelState.Clear();
+            TryValidateModel(dishRating);
+            if (ModelState.IsValid)
+            {
+                _context.Add(dishRating);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Dishes", new { id = dishRating.DishID });
+            }
+            ViewData["DishID"] = new SelectList(_context.Dish, "ID", "ID", dishRating.DishID);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", dishRating.UserID);
             return View(dishRating);
         }
 
