@@ -75,7 +75,6 @@ namespace LunchAdvisor.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine("Valid");
                 _context.Add(restaurant);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

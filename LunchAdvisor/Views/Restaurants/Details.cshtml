@@ -34,15 +34,15 @@
             <p class="fs-4">- @Model.Description</p>
             <p class="fs-5">Address: @Model.Location</p>
             <div class="d-flex mt-3 mb-3 justify-content-evenly">
-                <button class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-person-vcard fs-1"></i> Staff</button>
-                <button class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-egg-fried fs-1"></i> Dishes</button>
+                <a asp-action="Staff" asp-route-id="@Model.ID" class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-person-vcard fs-1"></i> Staff</a>
+                <a class="btn btn-primary fs-1 text-center pt-2 pb-2 ps-5 pe-5"><i class="bi bi-egg-fried fs-1"></i> Dishes</a>
             </div>
         </div>
     </div>
 </div>
 
 
-<h1 class="display-4">Reviews: <button class="btn btn-white"><i class="bi bi-plus-square display-4"></i></button></h1>
+<h1 class="display-4">Reviews: <a asp-action="Review" asp-route-id="@Model.ID" asp-controller="RestaurantRatings" class="btn btn-white"><i class="bi bi-plus-square display-4"></i></a></h1>
 <div class="container bg-light shadow p-3 mb-5 rounded">
     @{
         foreach (RestaurantRating restRating in Model.RestaurantRatings)

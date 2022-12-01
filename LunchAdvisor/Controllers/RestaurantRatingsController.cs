@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LunchAdvisor.Data;
 using LunchAdvisor.Models;
+using System.Security.Claims;
 
 namespace LunchAdvisor.Controllers
 {
@@ -43,6 +44,49 @@ namespace LunchAdvisor.Controllers
                 return NotFound();
             }
 
+            return View(restaurantRating);
+        }
+
+        public async Task<IActionResult> Review(int? id)
+        {
+            ViewBag.Id = id;
+
+            var Restaurant = await _context.Restaurant
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Restaurant == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.Name = Restaurant.Name;
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Review(RestaurantRating restaurantRating)
+        {
+            restaurantRating.date = DateTime.Now;
+            restaurantRating.RestaurantID = restaurantRating.ID;
+            restaurantRating.ID = 0;
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            restaurantRating.UserID = claims.Value;
+
+            
+            ModelState.Clear();
+            TryValidateModel(restaurantRating);
+            if (ModelState.IsValid)
+            {
+                _context.Add(restaurantRating);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Restaurants");
+            }
+            ViewData["RestaurantID"] = new SelectList(_context.Restaurant, "ID", "ID", restaurantRating.RestaurantID);
+            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", restaurantRating.UserID);
             return View(restaurantRating);
         }
 

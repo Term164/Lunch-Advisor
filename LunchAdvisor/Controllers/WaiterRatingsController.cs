@@ -46,6 +46,12 @@ namespace LunchAdvisor.Controllers
             return View(waiterRating);
         }
 
+        public IActionResult Review(int? id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
         // GET: WaiterRatings/Create
         public IActionResult Create()
         {

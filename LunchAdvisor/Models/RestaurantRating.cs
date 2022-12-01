@@ -19,6 +19,9 @@ namespace LunchAdvisor.Models
         [Display(Name = "Review date")]
         [DataType(DataType.Date)]
         public DateTime date { get; set; }
+
+        [Display(Name = "Rating")]
+        [Range(0, 5)]
         public int rating { get; set; }
     }
 }
